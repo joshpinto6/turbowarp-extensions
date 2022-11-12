@@ -47,6 +47,35 @@
         id: 'Gamepad',
         name: 'Gamepad',
         blocks: [
+                    {
+                    opcode: 'whenButtonDown',
+                    text: "when button [b] of pad [i] pressed",
+                    blockType: BlockType.HAT,
+                    arguments: {
+                        b: {
+                type: Scratch.ArgumentType.NUMBER,
+                defaultValue: '1',
+                menu: 'buttonMenu'
+              },
+              i: {
+                type: Scratch.ArgumentType.NUMBER,
+                defaultValue: '1',
+                menu: 'padMenu'
+              }
+                    }
+                },
+                              {
+                    opcode: 'whenGamepadConnected',
+                    text: "when gamepad [pad] connected",
+                    blockType: BlockType.HAT,
+                    arguments: {
+                        pad: {
+                type: Scratch.ArgumentType.NUMBER,
+                defaultValue: '1',
+                menu: 'padMenu'
+              }
+                    }
+                },
           {
             opcode: 'gamepadConnected',
             blockType: Scratch.BlockType.BOOLEAN,
@@ -59,6 +88,7 @@
               }
             }
           },
+
           {
             opcode: 'buttonDown',
             blockType: Scratch.BlockType.BOOLEAN,
@@ -348,7 +378,18 @@
       return !!gamepad;
     }
 
+    whenGamepadConnected ({pad}) {
+      const gamepad = getGamepad(pad);
+      return !!gamepad;
+    }
+    
     buttonDown ({b, i}) {
+      const gamepad = getGamepad(i);
+      if (!gamepad) return false;
+      return isButtonPressed(gamepad, b);
+    }
+    
+    whenButtonDown ({b, i}) {
       const gamepad = getGamepad(i);
       if (!gamepad) return false;
       return isButtonPressed(gamepad, b);
